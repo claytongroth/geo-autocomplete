@@ -1,6 +1,6 @@
 {
   "name": "geo-autocomplete",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "build/index.js",
   "peerDependencies": {
@@ -15,7 +15,10 @@
     "name": "Clayton Groth",
     "email": "claytoncgrth@gmail.com"
   },
-  "files": [ "dist", "README.md" ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/claytongroth/geo-autocomplete.git"
