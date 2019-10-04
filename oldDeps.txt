@@ -1,0 +1,176 @@
+"devDependencies": {
+      "babel-cli": "^6.24.1",
+      "babel-core": "^6.24.1",
+      "babel-loader": "^7.0.0",
+      "babel-plugin-transform-object-rest-spread": "^6.23.0",
+      "babel-plugin-transform-react-jsx": "^6.24.1",
+      "babel-preset-env": "^1.5.1"
+    }
+  }
+
+  "dependencies": {
+    "react": "^15.5.4",
+    "webpack": "^2.6.1"
+  },
+
+  import React, {useState, useReducer} from "react";
+import autoReducer from './autoReducer';
+import './index.css'
+
+
+
+const GeoAutocomplete = props => {
+    const initialState = {
+        error: false,
+        errorMsg: '',
+        query: props.query ? props.query : '',
+        queryRes: [],
+        pKey: props.pKey,
+        resetSearch: props.resetSearch ? props.resetSearch : false
+    }
+    const [state, dispatch] = useReducer(autoReducer, initialState)
+    const { placeholder,inputId, inputOnClick, inputOnBlur, inputOnFocus, inputClass,  } = props;
+    const {
+        error,
+        errorMsg,
+        query,
+        queryRes,
+        pKey,
+        resetSearch
+    } = state;
+
+    const updateQuery = ()=> {
+
+    }
+    const resetACSearch = () => {
+        
+    }
+    const onSuggestionSelect = () => {
+        
+    }
+    
+    
+    return (
+        <div>
+        <input placeholder={ placeholder || 'Search' }
+               id={inputId}
+               onClick={inputOnClick} 
+               onBlur={inputOnBlur}
+               onFocus={inputOnFocus}
+               className={inputClass ?
+                          inputClass + ' ac-input'
+                          : 'ac-input'}
+               onChange={updateQuery}
+               value={query}
+               type='text'/>
+        <span>
+          <div className='ac-menu'
+               style={queryRes.length > 0 || error ? { display: 'block' }
+               : { display: 'none' }}
+               onClick={resetSearch}>
+
+            {
+              queryRes.map( (place, i) => {
+                return(
+                  <div className='ac-suggestion'
+                       onClick={onSuggestionSelect}
+                       key={i}
+                       data-suggestion={place.place_name}
+                       data-lng={place.center[0]}
+                       data-lat={place.center[1]}
+                       data-text={place.text}>
+
+                    {place.place_name}
+
+                  </div>
+                )
+              })
+            }
+
+            {error && <div className="ac-suggestion">{errorMsg}</div>}
+          </div>
+        </span>
+      </div>
+    );
+};
+
+export default GeoAutocomplete;
+
+
+    _updateQuery(event) {
+        this.setState({ query: event.target.value });
+        const header = { 'Content-Type': 'application/json' };
+        let path = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + this.state.query + '.json?access_token=' + this.state.publicKey;
+    
+        if(this.props.country) {
+          path = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + this.state.query + '.json?access_token=' + this.state.publicKey + '&country=' + this.props.country;
+        }
+    
+        if(this.state.query.length > 2) {
+          return fetch(path, {
+            headers: header,
+          }).then(res => {
+            if (!res.ok) throw Error(res.statusText);
+            return res.json();
+          }).then(json => {
+            
+            this.setState({
+              error: false,
+              queryResults: json.features.map(x => ({...x, label: x.place_name}))
+            }, console.log(this.state.queryResults));
+
+          }).catch(err => {
+            this.setState({
+              error: true,
+              errorMsg: 'There was a problem retrieving data...',
+              queryResults: []
+            });
+          })
+        } else {
+          this.setState({
+            error: false,
+            queryResults: []
+          });
+        }
+    }
+
+    {/* <input 
+                placeholder={ this.props.placeholder || 'Search' }
+                id={this.props.inputId}
+                onClick={this.props.inputOnClick} 
+                onBlur={()=> {this.props.inputOnBlur; this.setState({focused: false})}}
+                onFocus={()=> {this.props.inputOnFocus; this.setState({focused: true})}}
+                className={this.props.inputClass ?
+                            this.props.inputClass + 'ac-input'
+                            : 'ac-input'}
+                onChange={this._updateQuery}
+                value={this.state.query}
+                type='text'
+            />
+            <span>
+            <div 
+                className='ac-menu'
+                style={this.state.queryResults.length > 0 || this.state.error ? { display: 'block' }
+                : { display: 'none' }}
+                onClick={this._resetSearch}>
+
+            {
+            // this.state.queryResults.map( (place, i) => {
+            //     return(
+            //     <div className='ac-suggestion'
+            //         onClick={this._onSuggestionSelect}
+            //         onMouseOver={()=>this.setState({selected: place})}
+            //         key={i}
+            //         data-suggestion={place.place_name}
+            //         data-lng={place.center[0]}
+            //         data-lat={place.center[1]}
+            //         data-text={place.text}>
+
+            //         {place.place_name}
+
+            //     </div>
+            //     )
+            // })
+            } */}
+            {/* </div>
+            </span> */}

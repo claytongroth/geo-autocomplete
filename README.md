@@ -1,0 +1,1 @@
+This is a lightweight geolocation auto-complete component built with react-select.
