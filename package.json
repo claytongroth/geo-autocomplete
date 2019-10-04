@@ -24,11 +24,11 @@
     "url": "https://github.com/claytongroth/geo-autocomplete.git"
   },
   "dependencies": {
-    "extract-text-webpack-plugin": "^3.0.2",
-    "react-select": "^3.0.8",
-    "webpack": "^4.41.0"
+    "react-select": "^3.0.8"
   },
   "devDependencies": {
+    "extract-text-webpack-plugin": "^3.0.2",
+    "webpack": "^4.41.0",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "babel-cli": "^6.26.0",
